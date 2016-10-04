@@ -32,10 +32,10 @@ takes **50 milliseconds** on a Pascal Titan X:
 </div>
 
 In this repository we provide:
-- The trained style transfer models used in the paper
-- Additional models using instance normalization
-- Code for running models on new images
-- A demo that runs models in real-time off a webcam
+- The style transfer models [used in the paper](models-from-the-paper)
+- Additional models [using instance normalization](models-with-instance-normalization)
+- Code for [running models on new images](running-on-new-images)
+- A demo that runs models in [real-time off a webcam](webcam-demo)
 - Code for training new feedforward style transfer models
 - An implementation of optimization-based style transfer method described
   by Gatys et al.
