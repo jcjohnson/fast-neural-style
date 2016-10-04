@@ -32,3 +32,23 @@ the following flags:
 - `-cudnn_benchmark`: Whether to use the cuDNN autotuner when running with cuDNN;
   1 for yes or 0 for no. Default is 0. If you want to run the model on many images
   of the same size, then setting this to 1 may give a speed boost.
+  
+  
+## webcam_demo.lua
+
+The script `webcam_demo.lua` runs models off the video stream
+from a webcam. It has the following flags:
+
+Model options:
+- `-models`: A comma-separated list of models to use.
+
+Webcam options:
+- `-webcam_idx`: Which webcam to use; default is 0.
+- `-webcam_fps`: Frames per second to request from the webcam; default is 60.
+- `-height`, `-width`: Image resolution to request from the webcam.
+
+Backend options:
+- `-gpu`: Which GPU to use (zero-indexed); use -1 for CPU. You will likely need
+  a GPU to get good results.
+- `-backend`: GPU backend to use, either `cuda` or `opencl`.
+- `-use_cudnn`: Whether to use cuDNN when using CUDA; 1 for yes, 0 for no.
