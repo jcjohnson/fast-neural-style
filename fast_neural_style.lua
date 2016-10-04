@@ -23,7 +23,7 @@ cmd:option('-median_filter', 3)
 cmd:option('-timing', 0)
 
 -- Input / output options
-cmd:option('-input_image', 'images/content/hoovertowernight.jpg')
+cmd:option('-input_image', 'images/content/chicago.jpg')
 cmd:option('-output_image', 'out.png')
 cmd:option('-input_dir', '')
 cmd:option('-output_dir', '')
@@ -93,6 +93,10 @@ local function main()
     end
 
     print('Writing output image to ' .. out_path)
+    local out_dir = paths.dirname(out_path)
+    if not path.isdir(out_dir) then
+      paths.mkdir(out_dir)
+    end
     image.save(out_path, img_out)
   end
 
