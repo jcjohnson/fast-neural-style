@@ -87,7 +87,7 @@ libraries to `/usr/local/cuda/lib64/`. Then install the Torch bindings for cuDNN
 luarocks install cudnn
 ```
 
-## Pretrained Models
+### Pretrained Models
 Download all pretrained style transfer models by running the script
 
 ```bash
