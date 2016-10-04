@@ -7,17 +7,17 @@ require 'qt'
 require 'qttorch'
 require 'qtwidget'
 
-require 'neuralstyle2.ShaveImage'
-require 'neuralstyle2.TotalVariation'
-require 'neuralstyle2.InstanceNormalization'
-local utils = require 'neuralstyle2.utils'
-local preprocess = require 'neuralstyle2.preprocess'
+require 'fast_neural_style.ShaveImage'
+require 'fast_neural_style.TotalVariation'
+require 'fast_neural_style.InstanceNormalization'
+local utils = require 'fast_neural_style.utils'
+local preprocess = require 'fast_neural_style.preprocess'
 
 
 local cmd = torch.CmdLine()
 
 -- Model options
-cmd:option('-models', 'models/eccv16/starry_night.t7')
+cmd:option('-models', 'models/instance_norm/candy.t7')
 cmd:option('-height', 480)
 cmd:option('-width', 640)
 
