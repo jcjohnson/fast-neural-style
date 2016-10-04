@@ -234,3 +234,8 @@ this script has the following improvements:
 - Support for many more CNN architectures, including ResNets
 
 The full set of options for this script is [described here](doc/flags.md#slow_neural_stylelua).
+
+## License
+
+Free for personal or research use; for commercial use please contact me.
+
