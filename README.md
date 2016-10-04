@@ -14,10 +14,9 @@ The paper builds on
 [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576)
 by Leon A. Gatys, Alexander S. Ecker, and Matthias Bethge by training
 feedforward neural networks that apply artistic styles to images.
-After training, our feedforward networks can stylize images up to
-**one thousand times faster** than the optimization-based method presented
-by Gatys et al. and used in the original
-[neural-style](https://github.com/jcjohnson/neural-style).
+After training, our feedforward networks can stylize images
+**hundreds of times faster** than the optimization-based method presented
+by Gatys et al.
 
 This repository also includes an implementation of instance normalization as
 described in the paper [Instance Normalization: The Missing Ingredient for Fast Stylization](https://arxiv.org/abs/1607.08022)
