@@ -94,7 +94,7 @@ It has the following flags:
 **Loss options**:
 - `-loss_network`: Path to a `.t7` file containing a pretrained CNN to be used
   as a loss network. The default is VGG-16, but the code should support many
-  models such as VGG-16 and ResNets.
+  models such as VGG-19 and ResNets.
 - `-content_layers`: Which layers of the loss network to use for the content
   reconstruction loss. This will usually be a comma-separated list of integers,
   but for complicated loss networks like ResNets it can be a list of
@@ -147,3 +147,66 @@ It has the following flags:
 - `-gpu`: Which GPU to use; default is 0. Set this to -1 to train in CPU mode.
 - `-backend`: Which backend to use for GPU, either `cuda` or `opencl`.
 - `-use_cudnn`: Whether to use cuDNN when using CUDA; 0 for no and 1 for yes.
+
+## slow_neural_style.lua
+
+The script `slow_neural_style.lua` uses the optimization-based style transfer method
+similar to the original [neural-style](https://github.com/jcjohnson/neural-style).
+
+It has the following flags:
+
+**Basic Options**
+- `-content_image`: Path to the content image to use.
+- `-style_image`: Path to the style image to use.
+- `-image_size`: Size of the generated image; its longest side is this many pixels long.
+
+**Output Options**
+- `-output_image`: Path where the output image will be written.
+- `-print_every`: Losses will be printed after every `-print_every` iterations.
+- `-save_every`: Images will be written every `-save_ever` iterations.
+
+**Loss options**
+All of these flags are the same as those in `train.lua`:
+- `-loss_network`: Path to a `.t7` file containing a pretrained CNN to be used
+  as a loss network. The default is VGG-16, but the code should support many
+  models such as VGG-19 and ResNets.
+- `-content_layers`: Which layers of the loss network to use for the content
+  reconstruction loss. This will usually be a comma-separated list of integers,
+  but for complicated loss networks like ResNets it can be a list of
+  of [layer strings](https://github.com/jcjohnson/neuralstyle2/blob/master/neuralstyle2/layer_utils.lua#L3).
+- `-content_weights`: Weights to use for each content reconstruction loss.
+  This can either be a single number, in which case the same weight is used for
+  all content reconstruction terms, or it can be a comma-separated list of
+  real values of the same length as `-content_layers`.
+- `-style_image_size`: Before computing the style loss targets, the style image
+  will be resized so its smaller side is this many pixels long. This can have a
+  big effect on the types of features transferred from the style image.
+- `-style_layers`: Which layers of the loss network to use for the style
+  reconstruction loss. This is a comma-separated list of the same format as
+  `-content_layers`.
+- `-style_weights`: Weights to use for style reconstruction terms. Either a
+  single number, in which case the same weight is used for all style
+  reconstruction terms, or a comma-separated list of weights of the same length
+  as `-style_layers`.
+- `-style_target_type`: What type of style targets to use; either `gram` or
+  `mean`. Default is `gram`, in which case style targets are Gram matrices as
+  described by Gatys et al. If this is `mean` then the spatial average will be
+  used as a style target instead of a Gram matrix.
+- `-tv_strength`: Strength for total variation regularization on the output
+  of the transformation network. Default is `1e-6`; higher values encourage
+  the network to produce outputs that are spatially smooth.
+  
+**Optimization Options**
+- `-learning_rate`: Learning rate to use for optimization
+- `-optimizer`: Either `lbfgs`, `adam`, or any other method from [torch/optim](https://github.com/torch/optim).
+- `-num_iterations`: Number of iterations to run for
+
+**Backend Options**:
+- `-gpu`: Which GPU to use; default is 0. Set this to -1 to train in CPU mode.
+- `-backend`: Which backend to use for GPU, either `cuda` or `opencl`.
+- `-use_cudnn`: Whether to use cuDNN when using CUDA; 0 for no and 1 for yes.
+
+**Other Options**
+- `-preprocessing`: What type of preprocessing and deprocessing to use; either
+  `vgg` or `resnet`. Default is `vgg`. If you want to use a ResNet as loss
+  network you should set this to `resnet`.
