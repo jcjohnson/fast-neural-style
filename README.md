@@ -38,8 +38,8 @@ In this repository we provide:
 - Code for [running models on new images](#running-on-new-images)
 - A demo that runs models in [real-time off a webcam](#webcam-demo)
 - Code for [training new feedforward style transfer models](doc/training.md)
-- An implementation of optimization-based style transfer method described
-  by Gatys et al.
+- An implementation of [optimization-based style transfer](#optimization-based-style-transfer)
+  method described by Gatys et al.
 
 If you find this code useful for your research, please cite
 
@@ -217,3 +217,20 @@ The full set of options for this script is [described here](doc/flags.md#webcam_
 
 You can [find instructions for training new models here](doc/training.md).
 
+## Optimization-based Style Transfer
+
+The script `slow_neural_style.lua` is similar to the
+[original neural-style](https://github.com/jcjohnson/neural-style), and uses
+the optimization-based style-transfer method described by Gatys et al.
+
+This script uses the same code for computing losses as the feedforward training
+script, allowing for fair comparisons between feedforward style transfer networks
+and optimization-based style transfer.
+
+Compared to the original [neural-style](https://github.com/jcjohnson/neural-style),
+this script has the following improvements:
+
+- Remove dependency on protobuf and [loadcaffe](https://github.com/szagoruyko/loadcaffe)
+- Support for many more CNN architectures, including ResNets
+
+The full set of options for this script is [described here](dog/flags.md#slow_neural_stylelua).
