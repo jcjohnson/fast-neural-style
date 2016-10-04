@@ -21,7 +21,7 @@ cmd:option('-image_size', 512)
 
 -- Loss options
 cmd:option('-loss_network', 'data/cnns/vgg16.t7')
-cmd:option('-tv_weight', 5e-6)
+cmd:option('-tv_strength', 5e-6)
 cmd:option('-loss_type', 'L2', 'L2|SmoothL1')
 cmd:option('-agg_type', 'gram', 'gram|mean')
 
@@ -114,7 +114,7 @@ local function main()
   -- Set up total variation regularization
   local tv = nn.Identity()
   if opt.tv_weight > 0 then
-    tv = nn.TotalVariation(opt.tv_weight)
+    tv = nn.TotalVariation(opt.tv_strength)
   end
   tv:type(dtype)
 
