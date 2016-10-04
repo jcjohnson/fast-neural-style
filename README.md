@@ -147,6 +147,15 @@ off a webcam stream. To run this demo you need to use `qlua` instead of `th`:
 qlua webcam_demo.lua -models models/instance_norm/candy.t7 -gpu 0
 ```
 
+You can run multiple models at the same time by passing a comma-separated list
+to the `-models` flag:
+
+```bash
+qlua webcam_demo.lua \
+  -models models/instance_norm/candy.t7,models/instance_norm/udnie.t7 \
+  -gpu 0
+```
+
 With a Pascal Titan X you can easily run four models in realtime at 640x480:
 
 <div align='center'>
