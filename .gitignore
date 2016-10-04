@@ -1,0 +1,6 @@
+*.swp
+out*.png
+data
+.ipynb_checkpoints
+*.DS_Store
+*.t7
