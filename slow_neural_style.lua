@@ -21,9 +21,9 @@ cmd:option('-image_size', 512)
 
 -- Loss options
 cmd:option('-loss_network', 'data/cnns/vgg16.t7')
-cmd:option('-tv_strength', 5e-6)
+cmd:option('-tv_strength', 1e-6)
 cmd:option('-loss_type', 'L2', 'L2|SmoothL1')
-cmd:option('-agg_type', 'gram', 'gram|mean')
+cmd:option('-style_target_type', 'gram', 'gram|mean')
 
 -- Options for content reconstruction
 cmd:option('-content_weights', '1.0')
@@ -40,8 +40,8 @@ cmd:option('-deepdream_weights', '')
 
 -- Optimization
 cmd:option('-learning_rate', 1.0)
-cmd:option('-optimizer', 'lbfgs')
-cmd:option('-num_iterations', 300)
+cmd:option('-optimizer', 'lbfgs', 'lbfgs|adam')
+cmd:option('-num_iterations', 500)
 
 -- Output options
 cmd:option('-output_image', 'out.png')
@@ -93,7 +93,7 @@ local function main()
     deepdream_layers = deepdream_layers,
     deepdream_weights = deepdream_weights,
     loss_type = opt.loss_type,
-    agg_type = opt.agg_type,
+    agg_type = opt.style_target_type,
   }
   local crit = nn.PerceptualCriterion(crit_args):type(dtype)
   
@@ -113,7 +113,7 @@ local function main()
 
   -- Set up total variation regularization
   local tv = nn.Identity()
-  if opt.tv_weight > 0 then
+  if opt.tv_strength > 0 then
     tv = nn.TotalVariation(opt.tv_strength)
   end
   tv:type(dtype)
