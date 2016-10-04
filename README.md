@@ -51,6 +51,42 @@ If you find this code useful for your research, please cite
 }
 ```
 
+## Setup
+All code is implemented in [Torch](http://torch.ch/).
+
+First [install Torch](http://torch.ch/docs/getting-started.html#installing-torch), then
+update / install the following packages:
+
+```bash
+luarocks install torch
+luarocks install nn
+luarocks install image
+luarocks install lua-cjson
+```
+
+### (Optional) GPU Acceleration
+
+If you have an NVIDIA GPU, you can accelerate all operations with CUDA.
+
+First [install CUDA](https://developer.nvidia.com/cuda-downloads), then
+update / install the following packages:
+
+```bash
+luarocks install cutorch
+luarocks install cunn
+```
+
+### (Optional) cuDNN
+
+When using CUDA, you can use cuDNN to accelerate convolutions.
+
+First [download cuDNN](https://developer.nvidia.com/cudnn) and copy the
+libraries to `/usr/local/cuda/lib64/`. Then install the Torch bindings for cuDNN:
+
+```bash
+luarocks install cudnn
+```
+
 ## Pretrained Models
 Download all pretrained style transfer models by running the script
 
