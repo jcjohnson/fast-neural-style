@@ -233,4 +233,4 @@ this script has the following improvements:
 - Remove dependency on protobuf and [loadcaffe](https://github.com/szagoruyko/loadcaffe)
 - Support for many more CNN architectures, including ResNets
 
-The full set of options for this script is [described here](dog/flags.md#slow_neural_stylelua).
+The full set of options for this script is [described here](doc/flags.md#slow_neural_stylelua).
