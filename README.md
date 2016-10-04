@@ -113,8 +113,28 @@ Here are some example outputs from these models, with an image size of 1024:
 </div>
 
 ## Running on new images
-Use the script `fast_neural_style.lua` to run a trained model on new images.
-It has the following flags:
+The script `fast_neural_style.lua` lets you use a trained model to stylize new images:
+
+```bash
+th fast_neural_style.lua \
+  -model models/eccv16/starry_night.t7 \
+  -input_image images/content/chicago.jpg \
+  -output_image out.png
+```
+
+You can run the same model on an entire directory of images like this:
+
+```bash
+th fast_neural_style.lua \
+  -model models/eccv16/starry_night.t7 \
+  -input_dir images/content/ \
+  -output_dir out/
+```
+
+You can control the size of the output images using the `-image_size` flag.
+
+By default this script runs on CPU; to run on GPU, add the flag `-gpu`
+specifying the GPU on which to run.
 
 **Model options**:
 - `-model`: Path to a `.t7` model file from `train.lua`.
