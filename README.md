@@ -173,21 +173,7 @@ luarocks install camera
 luarocks install qtlua
 ```
 
-The webcam demo has the following flags:
-
-Model options:
-- `-models`: A comma-separated list of models to use.
-
-Webcam options:
-- `-webcam_idx`: Which webcam to use; default is 0.
-- `-webcam_fps`: Frames per second to request from the webcam; default is 60.
-- `-height`, `-width`: Image resolution to request from the webcam.
-
-Backend options:
-- `-gpu`: Which GPU to use (zero-indexed); use -1 for CPU. You will likely need
-  a GPU to get good results.
-- `-backend`: GPU backend to use, either `cuda` or `opencl`.
-- `-use_cudnn`: Whether to use cuDNN when using CUDA; 1 for yes, 0 for no.
+The full set of options for this script is [described here](doc/flags.md#webcam_demolua).
 
 
 ## Training new models
