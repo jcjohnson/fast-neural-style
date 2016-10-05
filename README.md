@@ -2,7 +2,7 @@
 
 This is the code for the paper
 
-**Perceptual Losses for Real-Time Style Transfer and Super-Resolution**
+**[Perceptual Losses for Real-Time Style Transfer and Super-Resolution](http://cs.stanford.edu/people/jcjohns/eccv16/)**
 <br>
 [Justin Johnson](http://cs.stanford.edu/people/jcjohns/),
 [Alexandre Alahi](http://web.stanford.edu/~alahi/),
