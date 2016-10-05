@@ -35,7 +35,7 @@ cmd:option('-tv_strength', 1e-6)
 -- Options for feature reconstruction loss
 cmd:option('-content_weights', '1.0')
 cmd:option('-content_layers', '16')
-cmd:option('-loss_network', 'data/cnns/vgg16.t7')
+cmd:option('-loss_network', 'models/vgg16.t7')
 
 -- Options for style reconstruction loss
 cmd:option('-style_image', 'images/styles/candy.jpg')

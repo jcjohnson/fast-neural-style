@@ -20,7 +20,7 @@ cmd:option('-style_image', 'images/styles/starry_night.jpg')
 cmd:option('-image_size', 512)
 
 -- Loss options
-cmd:option('-loss_network', 'data/cnns/vgg16.t7')
+cmd:option('-loss_network', 'models/vgg16.t7')
 cmd:option('-tv_strength', 1e-6)
 cmd:option('-loss_type', 'L2', 'L2|SmoothL1')
 cmd:option('-style_target_type', 'gram', 'gram|mean')
