@@ -90,7 +90,7 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
   -- Build the model
   local model = nil
   if opt.resume_from_checkpoint ~= '' then
-    print('Loading checkpoint from .. ' opt.resume_from_checkpoint)
+    print('Loading checkpoint from ' .. opt.resume_from_checkpoint)
     model = torch.load(opt.resume_from_checkpoint).model:type(dtype)
   else
     print('Initializing model from scratch')
