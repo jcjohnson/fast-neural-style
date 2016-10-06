@@ -90,6 +90,9 @@ It has the following flags:
 - `-preprocessing`: What type of preprocessing and deprocessing to use; either
   `vgg` or `resnet`. Default is `vgg`. If you want to use a ResNet as loss
   network you should set this to `resnet`.
+- `-resume_from_checkpoint`: Path to a `.t7` checkpoint created by `train.lua`
+  to initialize the model from. If you use this option then all other model
+  architecture options will be ignored.
 
 **Loss options**:
 - `-loss_network`: Path to a `.t7` file containing a pretrained CNN to be used
