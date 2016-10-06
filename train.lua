@@ -25,6 +25,7 @@ cmd:option('-h5_file', 'data/ms-coco-256.h5')
 cmd:option('-padding_type', 'reflect-start')
 cmd:option('-tanh_constant', 150)
 cmd:option('-preprocessing', 'vgg')
+cmd:option('-resume_from_checkpoint', '')
 
 -- Generic loss function options
 cmd:option('-pixel_loss_type', 'L2', 'L2|L1|SmoothL1')
@@ -87,7 +88,14 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
   local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn)
 
   -- Build the model
-  local model = models.build_model(opt):type(dtype)
+  local model = nil
+  if opt.resume_from_checkpoint ~= '' then
+    print('Loading checkpoint from .. ' opt.resume_from_checkpoint)
+    model = torch.load(opt.resume_from_checkpoint).model:type(dtype)
+  else
+    print('Initializing model from scratch')
+    model = models.build_model(opt):type(dtype)
+  end
   if use_cudnn then cudnn.convert(model, cudnn) end
   model:training()
   print(model)
