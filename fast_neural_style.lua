@@ -47,7 +47,7 @@ local function main()
   if not ok then
     print('ERROR: Could not load model from ' .. opt.model)
     print('You may need to download the pretrained models by running')
-    print('bash models/instance_norm/download_models.sh')
+    print('bash models/download_style_transfer_models.sh')
     return
   end
   local model = checkpoint.model
@@ -63,14 +63,14 @@ local function main()
 
   local preprocess_method = checkpoint.opt.preprocessing or 'vgg'
   local preprocess = preprocess[preprocess_method]
-  
+
   local function run_image(in_path, out_path)
     local img = image.load(in_path, 3)
     if opt.image_size > 0 then
       img = image.scale(img, opt.image_size)
     end
     local H, W = img:size(2), img:size(3)
-    
+
     local img_pre = preprocess.preprocess(img:view(1, 3, H, W)):type(dtype)
     local timer = nil
     if opt.timing == 1 then
@@ -122,4 +122,3 @@ end
 
 
 main()
-
