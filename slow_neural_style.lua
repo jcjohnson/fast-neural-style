@@ -158,9 +158,9 @@ local function main()
     local config = {
       learningRate = opt.learning_rate
     }
-    local optim_fn = optim[opts.optimizer]
+    local optim_fn = optim[opt.optimizer]
     if optim_fn == nil then
-      error(string.format('Invalid optimizer "%s"', opts.optimizer))
+      error(string.format('Invalid optimizer "%s"', opt.optimizer))
     end
     for t = 1, opt.num_iterations do
       optim_fn(f, img, config)

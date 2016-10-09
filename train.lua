@@ -184,9 +184,9 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
       pixel_loss = pixel_loss * opt.pixel_loss_weight
       local grad_out_pix = pixel_crit:backward(out, y)
       if grad_out then
-        grad_out:add(opts.pixel_loss_weight, grad_out_pix)
+        grad_out:add(opt.pixel_loss_weight, grad_out_pix)
       else
-        grad_out_pix:mul(opts.pixel_loss_weight)
+        grad_out_pix:mul(opt.pixel_loss_weight)
         grad_out = grad_out_pix
       end
     end
