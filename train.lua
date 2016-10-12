@@ -43,7 +43,7 @@ cmd:option('-style_image', 'images/styles/candy.jpg')
 cmd:option('-style_image_size', 256)
 cmd:option('-style_weights', '5.0')
 cmd:option('-style_layers', '4,9,16,23')
-cmd:option('-style_target_type', 'gram|mean')
+cmd:option('-style_target_type', 'gram', 'gram|mean')
 
 -- Upsampling options
 cmd:option('-upsample_factor', 4)
