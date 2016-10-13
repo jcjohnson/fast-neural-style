@@ -34,7 +34,7 @@ cmd:option('-webcam_fps', 60)
 local function main()
   local opt = cmd:parse(arg)
 
-  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn)
+  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn == 1)
   local models = {}
 
   local preprocess_method = nil
