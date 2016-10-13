@@ -67,7 +67,7 @@ local function main()
   end
   preprocess = preprocess[opt.preprocessing]
   
-  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn)
+  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn == 1)
   
   -- Set up the criterion
   local ok, loss_net = pcall(function() return torch.load(opt.loss_network) end)

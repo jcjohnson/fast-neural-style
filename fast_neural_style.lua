@@ -42,7 +42,7 @@ local function main()
     error('Must give exactly one of -input_image or -input_dir')
   end
 
-  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn)
+  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn == 1)
   local ok, checkpoint = pcall(function() return torch.load(opt.model) end)
   if not ok then
     print('ERROR: Could not load model from ' .. opt.model)

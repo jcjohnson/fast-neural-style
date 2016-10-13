@@ -85,7 +85,7 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
   preprocess = preprocess[opt.preprocessing]
 
   -- Figure out the backend
-  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn)
+  local dtype, use_cudnn = utils.setup_gpu(opt.gpu, opt.backend, opt.use_cudnn == 1)
 
   -- Build the model
   local model = nil
