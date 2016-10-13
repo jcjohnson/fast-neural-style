@@ -18,7 +18,12 @@ Output:
 
 function Gram:__init(normalize)
   parent.__init(self)
-  self.normalize = normalize or true
+  if normalize ~= nil then
+    assert(type(normalize) == 'boolean', 'normalize has to be true/false')
+    self.normalize = normalize
+  else
+    self.normalize = true
+  end
   self.buffer = torch.Tensor()
 end
 
