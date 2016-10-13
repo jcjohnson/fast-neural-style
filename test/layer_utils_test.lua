@@ -1,7 +1,7 @@
 require 'torch'
 require 'nn'
 
-local layer_utils = require 'neuralstyle2.layer_utils'
+local layer_utils = require 'fast_neural_style.layer_utils'
 
 
 local tester = torch.Tester()
