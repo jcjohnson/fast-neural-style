@@ -1,6 +1,5 @@
 # Start with Ubuntu base image
 FROM ubuntu:14.04
-MAINTAINER Kai Arulkumaran <design@kaixhin.com>
 
 # Install git, apt-add-repository and dependencies for iTorch
 RUN apt-get update && apt-get install -y \
