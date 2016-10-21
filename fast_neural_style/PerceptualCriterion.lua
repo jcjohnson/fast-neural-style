@@ -46,7 +46,7 @@ function crit:__init(args)
   -- Set up style loss layers
   for i, layer_string in ipairs(args.style_layers) do
     local weight = args.style_weights[i]
-    local style_loss_layer = nn.StyleLoss(weight, args.loss_type)
+    local style_loss_layer = nn.StyleLoss(weight, args.loss_type, args.agg_type)
     layer_utils.insert_after(self.net, layer_string, style_loss_layer)
     table.insert(self.style_loss_layers, style_loss_layer)
   end
