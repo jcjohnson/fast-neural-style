@@ -1,5 +1,4 @@
 require 'torch'
-require 'loadcaffe'
 require 'optim'
 require 'image'
 
