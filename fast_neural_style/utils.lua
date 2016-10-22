@@ -116,7 +116,7 @@ function M.is_image_file(filename)
     return false
   end
   -- Check against a list of known image extensions
-  local ext = string.lower(paths.extname(filename))
+  local ext = string.lower(paths.extname(filename) or "")
   for _, image_ext in ipairs(IMAGE_EXTS) do
     if ext == image_ext then
       return true
