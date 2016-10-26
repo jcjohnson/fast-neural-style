@@ -4,7 +4,7 @@ require 'cutorch'
 require 'cunn'
 require 'cudnn'
 require 'loadcaffe'
-local utils = require 'neuralstyle2.utils'
+local utils = require 'fast_neural_style.utils'
 
 --[[
 Convert model checkpoints to CPU-only .t7 checkpoints.
