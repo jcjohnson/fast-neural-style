@@ -28,7 +28,7 @@ function StyleLoss:__init(strength, loss_type, agg_type)
   loss_type = loss_type or 'L2'
   if loss_type == 'L2' then
     self.crit = nn.MSECriterion()
-  elseif self.crit == 'SmoothL1' then
+  elseif loss_type == 'SmoothL1' then
     self.crit = nn.SmoothL1Criterion()
   else
     error(string.format('invalid loss type "%s"', loss_type))
