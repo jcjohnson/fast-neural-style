@@ -179,7 +179,7 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
     -- Compute pixel loss and gradient
     local pixel_loss = 0
       if pixel_crit then
-      local pixel_loss = pixel_crit:forward(out, y)
+      pixel_loss = pixel_crit:forward(out, y)
       pixel_loss = pixel_loss * opt.pixel_loss_weight
       local grad_out_pix = pixel_crit:backward(out, y)
       if grad_out then
