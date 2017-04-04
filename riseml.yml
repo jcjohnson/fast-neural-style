@@ -1,12 +1,15 @@
-description: Demo for the implementation of 'Perceptual Losses for Real-Time Style Transfer and Super-Resolution'.
-image:
-  - riseml/torch:latest
-service:
-  commands:
-    - mkdir -p /scratch/models/instance_norm
-    - cd /scratch/models/instance_norm
+deploy:
+  image:
+    name: riseml/torch:latest
+    install:
     - wget -nc http://cs.stanford.edu/people/jcjohns/fast-neural-style/models/instance_norm/candy.t7
-    - cd -
+  run:
     - th demo.lua -model /scratch/models/instance_norm/candy.t7 -gpu 0
-  input: image
-  output: image
+  gpu: yes
+  input: 
+    image: image/jpeg
+  output: 
+    image: image/jpeg
+  demo:
+    title: Real-Time Style Transfer Demo
+    description: Demo for the implementation of 'Perceptual Losses for Real-Time Style Transfer and Super-Resolution'.
