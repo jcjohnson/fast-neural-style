@@ -4,7 +4,7 @@ deploy:
     install:
     - wget -nc http://cs.stanford.edu/people/jcjohns/fast-neural-style/models/instance_norm/candy.t7
   run:
-    - th demo.lua -model /scratch/models/instance_norm/candy.t7 -gpu 0
+    - th demo.lua -model candy.t7 -gpu 0
   gpu: yes
   input: 
     image: image/jpeg
