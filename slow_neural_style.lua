@@ -33,6 +33,10 @@ cmd:option('-content_layers', '16')
 cmd:option('-style_weights', '5.0')
 cmd:option('-style_layers', '4,9,16,23')
 cmd:option('-style_image_size', 512)
+cmd:option('-histo_weights', '5.0')
+cmd:option('-histo_layers', '2,21')
+cmd:option('-histo_bins', 256)
+cmd:option('-histo_threads', 4)
 
 -- Options for DeepDream
 cmd:option('-deepdream_layers', '')
@@ -80,6 +84,8 @@ local function main()
   print(loss_net)
   local style_layers, style_weights =
     utils.parse_layers(opt.style_layers, opt.style_weights)
+  local histo_layers, histo_weights =
+    utils.parse_layers(opt.histo_layers, opt.histo_weights)
   local content_layers, content_weights =
     utils.parse_layers(opt.content_layers, opt.content_weights)
   local deepdream_layers, deepdream_weights =
@@ -88,6 +94,10 @@ local function main()
     cnn = loss_net,
     style_layers = style_layers,
     style_weights = style_weights,
+    histo_layers = histo_layers,
+    histo_weights = histo_weights,
+    histo_bins = opt.histo_bins,
+    histo_threads = opt.histo_threads,
     content_layers = content_layers,
     content_weights = content_weights,
     deepdream_layers = deepdream_layers,
