@@ -74,6 +74,7 @@ local function main()
   while true do
     -- Grab a frame from the webcam
     local img = cam:forward()
+    img = image.flip(img, 3)
 
     -- Preprocess the frame
     local H, W = img:size(2), img:size(3)
