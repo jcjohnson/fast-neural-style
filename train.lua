@@ -43,6 +43,10 @@ cmd:option('-style_image_size', 256)
 cmd:option('-style_weights', '5.0')
 cmd:option('-style_layers', '4,9,16,23')
 cmd:option('-style_target_type', 'gram', 'gram|mean')
+cmd:option('-histo_weights', '5.0')
+cmd:option('-histo_layers', '4,23')
+cmd:option('-histo_bins', 256)
+cmd:option('-histo_threads', 4)
 
 -- Upsampling options
 cmd:option('-upsample_factor', 4)
@@ -75,6 +79,8 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
     utils.parse_layers(opt.content_layers, opt.content_weights)
   opt.style_layers, opt.style_weights =
     utils.parse_layers(opt.style_layers, opt.style_weights)
+  opt.histo_layers, opt.histo_weights =
+    utils.parse_layers(opt.histo_layers, opt.histo_weights)
 
   -- Figure out preprocessing
   if not preprocess[opt.preprocessing] then
@@ -119,6 +125,10 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
       cnn = loss_net,
       style_layers = opt.style_layers,
       style_weights = opt.style_weights,
+      histo_layers = opt.histo_layers,
+      histo_weights = opt.histo_weights,
+      histo_bins = opt.histo_bins,
+      histo_threads = opt.histo_threads,
       content_layers = opt.content_layers,
       content_weights = opt.content_weights,
       agg_type = opt.style_target_type,
@@ -227,6 +237,9 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
     for i, k in ipairs(opt.style_layers) do
       style_loss_history[string.format('style-%d', k)] = {}
     end
+    for i, k in ipairs(opt.histo_layers) do
+      style_loss_history[string.format('histo-%d', k)] = {}
+    end
     for i, k in ipairs(opt.content_layers) do
       style_loss_history[string.format('content-%d', k)] = {}
     end
@@ -244,6 +257,10 @@ cmd:option('-backend', 'cuda', 'cuda|opencl')
       for i, k in ipairs(opt.style_layers) do
         table.insert(style_loss_history[string.format('style-%d', k)],
           percep_crit.style_losses[i])
+      end
+      for i, k in ipairs(opt.histo_layers) do
+        table.insert(style_loss_history[string.format('histo-%d', k)],
+          percep_crit.histo_losses[i])
       end
       for i, k in ipairs(opt.content_layers) do
         table.insert(style_loss_history[string.format('content-%d', k)],

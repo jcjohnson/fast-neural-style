@@ -4,6 +4,7 @@ require 'nn'
 require 'fast_neural_style.ContentLoss'
 require 'fast_neural_style.StyleLoss'
 require 'fast_neural_style.DeepDreamLoss'
+require 'fast_neural_style.HistoLoss'
 
 local layer_utils = require 'fast_neural_style.layer_utils'
 
@@ -27,12 +28,14 @@ Input: args is a table with the following keys:
 function crit:__init(args)
   args.content_layers = args.content_layers or {}
   args.style_layers = args.style_layers or {}
+  args.histo_layers = args.histo_layers or {}
   args.deepdream_layers = args.deepdream_layers or {}
   
   self.net = args.cnn
   self.net:evaluate()
   self.content_loss_layers = {}
   self.style_loss_layers = {}
+  self.histo_loss_layers = {}
   self.deepdream_loss_layers = {}
 
   -- Set up content loss layers
@@ -49,6 +52,14 @@ function crit:__init(args)
     local style_loss_layer = nn.StyleLoss(weight, args.loss_type, args.agg_type)
     layer_utils.insert_after(self.net, layer_string, style_loss_layer)
     table.insert(self.style_loss_layers, style_loss_layer)
+  end
+  
+  -- Set up histo loss layers
+  for i, layer_string in ipairs(args.histo_layers) do
+    local weight = args.histo_weights[i]
+    local histo_loss_layers = nn.HistoLoss(weight, args.histo_bins, args.histo_threads)
+    layer_utils.insert_after(self.net, layer_string, histo_loss_layers)
+    table.insert(self.histo_loss_layers, histo_loss_layers)
   end
 
   -- Set up DeepDream layers
@@ -75,9 +86,11 @@ function crit:setStyleTarget(target)
   for i, style_loss_layer in ipairs(self.style_loss_layers) do
     style_loss_layer:setMode('capture')
   end
+  for i, histo_loss_layer in ipairs(self.histo_loss_layers) do
+	histo_loss_layer:setMode('capture')
+  end
   self.net:forward(target)
 end
-
 
 --[[
 target: Tensor of shape (N, 3, H, W) giving pixels for content target images
@@ -85,6 +98,9 @@ target: Tensor of shape (N, 3, H, W) giving pixels for content target images
 function crit:setContentTarget(target)
   for i, style_loss_layer in ipairs(self.style_loss_layers) do
     style_loss_layer:setMode('none')
+  end
+  for i, histo_loss_layer in ipairs(self.histo_loss_layers) do
+	histo_loss_layer:setMode('none')
   end
   for i, content_loss_layer in ipairs(self.content_loss_layers) do
     content_loss_layer:setMode('capture')
@@ -106,6 +122,11 @@ function crit:setContentWeight(weight)
   end
 end
 
+function crit:setHistoWeight(weight)
+  for i, histo_loss_layer in ipairs(self.histo_loss_layers) do
+    histo_loss_layer.strength = weight
+  end
+end
 
 --[[
 Inputs:
@@ -119,7 +140,7 @@ function crit:updateOutput(input, target)
     self:setContentTarget(target.content_target)
   end
   if target.style_target then
-    self.setStyleTarget(target.style_target)
+    self:setStyleTarget(target.style_target)
   end
 
   -- Make sure to set all content and style loss layers to loss mode before
@@ -129,6 +150,9 @@ function crit:updateOutput(input, target)
   end
   for i, style_loss_layer in ipairs(self.style_loss_layers) do
     style_loss_layer:setMode('loss')
+  end
+  for i, histo_loss_layer in ipairs(self.histo_loss_layers) do
+    histo_loss_layer:setMode('loss')
   end
 
   local output = self.net:forward(input)
@@ -141,6 +165,8 @@ function crit:updateOutput(input, target)
   self.content_losses = {}
   self.total_style_loss = 0
   self.style_losses = {}
+  self.total_histo_loss = 0
+  self.histo_losses = {}
   for i, content_loss_layer in ipairs(self.content_loss_layers) do
     self.total_content_loss = self.total_content_loss + content_loss_layer.loss
     table.insert(self.content_losses, content_loss_layer.loss)
@@ -149,8 +175,12 @@ function crit:updateOutput(input, target)
     self.total_style_loss = self.total_style_loss + style_loss_layer.loss
     table.insert(self.style_losses, style_loss_layer.loss)
   end
+  for i, histo_loss_layer in ipairs(self.histo_loss_layers) do
+	self.total_histo_loss = self.total_histo_loss + histo_loss_layer.loss
+	table.insert(self.histo_losses, histo_loss_layer.loss)
+  end
   
-  self.output = self.total_style_loss + self.total_content_loss
+  self.output = self.total_style_loss + self.total_content_loss + self.total_histo_loss
   return self.output
 end
 
