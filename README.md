@@ -8,7 +8,7 @@ This is the code for the paper
 [Alexandre Alahi](http://web.stanford.edu/~alahi/),
 [Li Fei-Fei](http://vision.stanford.edu/feifeili/)
 <br>
-To appear at [ECCV 2016](http://www.eccv2016.org/)
+Presented at [ECCV 2016](http://www.eccv2016.org/)
 
 The paper builds on
 [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576)
