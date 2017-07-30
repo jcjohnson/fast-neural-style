@@ -5,6 +5,7 @@ the following flags:
 
 **Model options**:
 - `-model`: Path to a `.t7` model file from `train.lua`.
+- `-models`: A comma-separated list of models to use.
 - `-image_size`: Before being input to the network, images are resized so
   their longer side is this many pixels long. If 0 then use the original size
   of the image.
@@ -32,8 +33,8 @@ the following flags:
 - `-cudnn_benchmark`: Whether to use the cuDNN autotuner when running with cuDNN;
   1 for yes or 0 for no. Default is 0. If you want to run the model on many images
   of the same size, then setting this to 1 may give a speed boost.
-  
-  
+
+
 ## webcam_demo.lua
 
 The script `webcam_demo.lua` runs models off the video stream
@@ -198,7 +199,7 @@ All of these flags are the same as those in `train.lua`:
 - `-tv_strength`: Strength for total variation regularization on the output
   of the transformation network. Default is `1e-6`; higher values encourage
   the network to produce outputs that are spatially smooth.
-  
+
 **Optimization Options**
 - `-learning_rate`: Learning rate to use for optimization
 - `-optimizer`: Either `lbfgs`, `adam`, or any other method from [torch/optim](https://github.com/torch/optim).
