@@ -18,6 +18,7 @@ local cmd = torch.CmdLine()
 
 -- Model options
 cmd:option('-model', 'models/instance_norm/candy.t7')
+cmd:option('-models', 'models/instance_norm/candy.t7,models/instance_norm/udnie.t7')
 cmd:option('-image_size', 768)
 cmd:option('-median_filter', 3)
 cmd:option('-timing', 0)
@@ -38,6 +39,7 @@ cmd:option('-cudnn_benchmark', 0)
 local function main()
   local opt = cmd:parse(arg)
 
+
   if (opt.input_image == '') and (opt.input_dir == '') then
     error('Must give exactly one of -input_image or -input_dir')
   end
@@ -50,18 +52,49 @@ local function main()
     print('bash models/download_style_transfer_models.sh')
     return
   end
-  local model = checkpoint.model
-  model:evaluate()
-  model:type(dtype)
-  if use_cudnn then
-    cudnn.convert(model, cudnn)
-    if opt.cudnn_benchmark == 0 then
-      cudnn.benchmark = false
-      cudnn.fastest = true
+
+  local models = {}
+  local preprocess_method = nil
+
+  if opt.model then
+    local model = checkpoint.model
+    model:evaluate()
+    model:type(dtype)
+    if use_cudnn then
+      cudnn.convert(model, cudnn)
+      if opt.cudnn_benchmark == 0 then
+        cudnn.benchmark = false
+        cudnn.fastest = true
+      end
+      table.insert(models, model)
+      preprocess_method = checkpoint.opt.preprocessing or 'vgg'
     end
   end
 
-  local preprocess_method = checkpoint.opt.preprocessing or 'vgg'
+  if opt.models then
+    for _, checkpoint_path in ipairs(opt.models:split(',')) do
+      print('loading model from ', checkpoint_path)
+      local checkpoint = torch.load(checkpoint_path)
+      local model = checkpoint.model
+      model:evaluate()
+      model:type(dtype)
+      if use_cudnn then
+        cudnn.convert(model, cudnn)
+      end
+      table.insert(models, model)
+      local this_preprocess_method = checkpoint.opt.preprocessing or 'vgg'
+      if not preprocess_method then
+        print('got here')
+        preprocess_method = this_preprocess_method
+        print(preprocess_method)
+      else
+        if this_preprocess_method ~= preprocess_method then
+           error('All models must use the same preprocessing')
+        end
+      end
+    end
+  end
+
   local preprocess = preprocess[preprocess_method]
 
   local function run_image(in_path, out_path)
@@ -70,8 +103,9 @@ local function main()
       img = image.scale(img, opt.image_size)
     end
     local H, W = img:size(2), img:size(3)
+    img = img:view(1, 3, H, W)
+    local img_pre = preprocess.preprocess(img):type(dtype)
 
-    local img_pre = preprocess.preprocess(img:view(1, 3, H, W)):type(dtype)
     local timer = nil
     if opt.timing == 1 then
       -- Do an extra forward pass to warm up memory and cuDNN
@@ -79,14 +113,26 @@ local function main()
       timer = torch.Timer()
       if cutorch then cutorch.synchronize() end
     end
-    local img_out = model:forward(img_pre)
+    local img_out = nil
+    local img_out_pre = nil
+    for i, model in ipairs(models) do
+      if not img_out then
+        img_out_pre = model:forward(img_pre)
+      end
+      if img_out then
+        img = img_out:view(1, 3, H, W)
+        img_pre = preprocess.preprocess(img):type(dtype)
+        img_out_pre = model:forward(img_pre)
+      end
+      img_out = preprocess.deprocess(img_out_pre)[1]:float()
+    end
+
     if opt.timing == 1 then
       if cutorch then cutorch.synchronize() end
       local time = timer:time().real
       print(string.format('Image %s (%d x %d) took %f',
             in_path, H, W, time))
     end
-    local img_out = preprocess.deprocess(img_out)[1]
 
     if opt.median_filter > 0 then
       img_out = utils.median_filter(img_out, opt.median_filter)
