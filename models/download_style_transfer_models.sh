@@ -1,4 +1,4 @@
-BASE_URL="http://cs.stanford.edu/people/jcjohns/fast-neural-style/models/"
+BASE_URL="https://cs.stanford.edu/people/jcjohns/fast-neural-style/models/"
 
 mkdir -p models/instance_norm
 cd models/instance_norm
